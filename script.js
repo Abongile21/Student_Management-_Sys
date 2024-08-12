@@ -1,11 +1,68 @@
-let students = JSON.parse(localStorage.getItem('students')) || [];
+// let students = JSON.parse(localStorage.getItem('students')) || [];
+let students = [
+    { fname: 'Alice', lname: 'Smith', grade: 88 },
+    { fname: 'Bob', lname: 'Johnson', grade: 74 },
+    { fname: 'Charlie', lname: 'Williams', grade: 92 },
+    { fname: 'David', lname: 'Jones', grade: 85 },
+    { fname: 'Eva', lname: 'Brown', grade: 67 },
+    { fname: 'Frank', lname: 'Davis', grade: 76 },
+    { fname: 'Grace', lname: 'Miller', grade: 81 },
+    { fname: 'Hannah', lname: 'Wilson', grade: 90 },
+    { fname: 'Ivy', lname: 'Moore', grade: 72 },
+    { fname: 'Jack', lname: 'Taylor', grade: 95 },
+    { fname: 'Liam', lname: 'Anderson', grade: 60 },
+    { fname: 'Mia', lname: 'Thomas', grade: 78 },
+    { fname: 'Noah', lname: 'Jackson', grade: 84 },
+    { fname: 'Olivia', lname: 'White', grade: 89 },
+    { fname: 'Paul', lname: 'Harris', grade: 73 },
+    { fname: 'Quinn', lname: 'Martin', grade: 66 },
+    { fname: 'Riley', lname: 'Thompson', grade: 88 },
+    { fname: 'Sophia', lname: 'Garcia', grade: 92 },
+    { fname: 'Thomas', lname: 'Martinez', grade: 80 },
+    { fname: 'Uma', lname: 'Roberts', grade: 77 },
+    { fname: 'Victor', lname: 'Clark', grade: 63 },
+    { fname: 'Wendy', lname: 'Lewis', grade: 95 },
+    { fname: 'Xander', lname: 'Walker', grade: 82 },
+    { fname: 'Yara', lname: 'Hall', grade: 70 },
+    { fname: 'Zach', lname: 'Allen', grade: 66 },
+    { fname: 'Anna', lname: 'Young', grade: 90 },
+    { fname: 'Brian', lname: 'King', grade: 75 },
+    { fname: 'Cora', lname: 'Wright', grade: 83 },
+    { fname: 'Derek', lname: 'Scott', grade: 71 },
+    { fname: 'Ella', lname: 'Adams', grade: 87 },
+    { fname: 'Felix', lname: 'Baker', grade: 69 },
+    { fname: 'Gina', lname: 'Gonzalez', grade: 94 },
+    { fname: 'Henry', lname: 'Nelson', grade: 62 },
+    { fname: 'Iris', lname: 'Carter', grade: 91 },
+    { fname: 'James', lname: 'Mitchell', grade: 85 },
+    { fname: 'Kara', lname: 'Perez', grade: 79 },
+    { fname: 'Leo', lname: 'Robinson', grade: 96 },
+    { fname: 'Maya', lname: 'Foster', grade: 68 },
+    { fname: 'Nina', lname: 'Sullivan', grade: 77 },
+    { fname: 'Owen', lname: 'Parker', grade: 82 },
+    { fname: 'Paige', lname: 'Morris', grade: 73 },
+    { fname: 'Quincy', lname: 'Ward', grade: 87 },
+    { fname: 'Rosa', lname: 'Price', grade: 61 },
+    { fname: 'Sam', lname: 'Cooper', grade: 78 },
+    { fname: 'Tina', lname: 'Bell', grade: 80 },
+    { fname: 'Ulysses', lname: 'Murphy', grade: 93 },
+    { fname: 'Vera', lname: 'Bailey', grade: 84 },
+    { fname: 'Will', lname: 'Rivera', grade: 88 },
+    { fname: 'Xena', lname: 'Fox', grade: 95 },
+    { fname: 'Yann', lname: 'Hayes', grade: 67 },
+    { fname: 'Zoe', lname: 'Ward', grade: 81 }
+];
+
 let editingIndex = -1;
-let chartInstance = null; // Store the chart instance for destruction
+let chartInstance = null; 
 
 const fname = document.getElementById('fname');
 const lname = document.getElementById('lname');
 const grade = document.getElementById('grade');
 const studentForm = document.getElementById('studentForm');
+const del =document.getElementById('del')
+const adding = document.getElementById('adding')
+
 
 studentForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -23,10 +80,12 @@ studentForm.addEventListener('submit', (e) => {
         editingIndex = -1;
         document.getElementById('submit').textContent = 'Add';
     }
-
+    adding.play()
     localStorage.setItem('students', JSON.stringify(students));
+
     studentForm.reset();
     closeModal();
+    
     renderStudents();
 });
 
@@ -68,6 +127,7 @@ function editStudent(index) {
 function deleteStudent(index) {
     students.splice(index, 1);
     localStorage.setItem('students', JSON.stringify(students));
+    del.play()
     renderStudents();
 }
 
@@ -78,6 +138,7 @@ function deleteAll() {
 function confirmDeleteAll() {
     students = [];
     localStorage.removeItem('students');
+    del.play()
     renderStudents();
     closeDeleteAllModal();
 }
@@ -95,17 +156,18 @@ function closeModal() {
     studentForm.reset();
     editingIndex = -1;
     document.getElementById('submit').textContent = 'Add';
+    adding.play()
 }
 
 function openChartModal() {
     const ctx = document.getElementById('gradeChart').getContext('2d');
 
-    // Destroy existing chart instance if it exists
+    
     if (chartInstance) {
         chartInstance.destroy();
     }
 
-    // Calculate the number of students in each grade range
+    
     const ranges = [0, 50, 60, 70, 80, 90, 100];
     const rangeLabels = ['0-49', '50-59', '60-69', '70-79', '80-89', '90-100'];
     const dataCounts = new Array(ranges.length - 1).fill(0);
