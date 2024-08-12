@@ -12,6 +12,7 @@ body {
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    animation: 1s ease-in 0s 1 slidein;
 }
 
 @keyframes slidein {
@@ -25,11 +26,7 @@ body {
   }
 
 
-.container{
-    animation: 1s ease-out 0s 1 slidein;
 
-    
-}
 h1, h2 {
     text-align: center;
     color: #333;
@@ -96,16 +93,6 @@ th, td {
     background-color: #dc3545;
     color: #fff;
 }
-/* @keyframes pulse {
-    0%,100%{ 
-        
-
-    }
-    50%{
-
-    }
-    
-} */
 .actions .edit:hover {
     background-color: #e0a800;
 }
