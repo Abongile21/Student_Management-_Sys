@@ -62,7 +62,7 @@ const grade = document.getElementById('grade');
 const studentForm = document.getElementById('studentForm');
 const del =document.getElementById('del')
 const adding = document.getElementById('adding')
-
+const submit = document.getElementById('submit')
 
 studentForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -106,11 +106,11 @@ function renderStudents() {
                 <td class="p-3">${student.lname}</td>
                 <td class="p-3">${student.grade}</td>
                 <td class="p-3">
-                    <button class="bg-yellow-500 text-white px-3 py-1 rounded mr-2" onclick="editStudent(${index})">Edit</button>
+                    <button class="bg-yellow-500 text-white px-3 py-1 rounded mr-2" onclick="editStudent(${index})">Update</button>
                     <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteStudent(${index})">Delete</button>
                 </td>
             `;
-            tbody.appendChild(row);
+            tbody.prepend(row);
         });
 }
 
@@ -120,7 +120,8 @@ function editStudent(index) {
     lname.value = student.lname;
     grade.value = student.grade;
     editingIndex = index;
-    document.getElementById('submit').textContent = 'Update';
+    submit.textContent = 'Update';
+    submit.classList='bg-yellow-500 text-white px-3 py-1 rounded mr-2'
     openModal();
 }
 
