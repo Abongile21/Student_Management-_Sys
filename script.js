@@ -1,4 +1,22 @@
+
+let editingIndex = -1;
+let chartInstance = null; 
+
+const fname = document.getElementById('fname');
+const lname = document.getElementById('lname');
+const grade = document.getElementById('grade');
+const studentForm = document.getElementById('studentForm');
+const del =document.getElementById('del')
+const adding = document.getElementById('adding')
+const submit = document.getElementById('submit')
+const studentModal = document.getElementById('studentModal')
+const chartModal = document.getElementById('chartModal')
+const search = document.getElementById('search');
+
 // let students = JSON.parse(localStorage.getItem('students')) || [];
+
+
+
 let students = [
     { fname: 'Alice', lname: 'Smith', grade: 88 },
     { fname: 'Bob', lname: 'Johnson', grade: 74 },
@@ -53,16 +71,6 @@ let students = [
     { fname: 'Zoe', lname: 'Ward', grade: 81 }
 ];
 
-let editingIndex = -1;
-let chartInstance = null; 
-
-const fname = document.getElementById('fname');
-const lname = document.getElementById('lname');
-const grade = document.getElementById('grade');
-const studentForm = document.getElementById('studentForm');
-const del =document.getElementById('del')
-const adding = document.getElementById('adding')
-const submit = document.getElementById('submit')
 
 studentForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -78,7 +86,7 @@ studentForm.addEventListener('submit', (e) => {
     } else {
         students[editingIndex] = studentData;
         editingIndex = -1;
-        document.getElementById('submit').textContent = 'Add';
+        submit.textContent = 'Add';
     }
     adding.play()
     localStorage.setItem('students', JSON.stringify(students));
@@ -93,7 +101,7 @@ function renderStudents() {
     const tbody = document.querySelector('#studentTable tbody');
     tbody.innerHTML = '';
 
-    const searchQuery = document.getElementById('search').value.toLowerCase();
+    const searchQuery = search.value.toLowerCase();
 
     students
         .filter(student => student.fname.toLowerCase().includes(searchQuery) || 
@@ -149,19 +157,19 @@ function cancelDeleteAll() {
 }
 
 function openModal() {
-    document.getElementById('studentModal').classList.remove('hidden');
+    studentModal.classList.remove('hidden');
 }
 
 function closeModal() {
-    document.getElementById('studentModal').classList.add('hidden');
+    studentModal.classList.add('hidden');
     studentForm.reset();
     editingIndex = -1;
-    document.getElementById('submit').textContent = 'Add';
+    submit.textContent = 'Add';
     adding.play()
 }
 
 function openChartModal() {
-    const ctx = document.getElementById('gradeChart').getContext('2d');
+    const ctx = chartModal.getContext('2d');
 
     
     if (chartInstance) {
@@ -224,13 +232,13 @@ function openChartModal() {
         }
     });
 
-    document.getElementById('chartModal').classList.remove('hidden');
+    chartModal.classList.remove('hidden');
 }
 
 function closeChartModal() {
-    document.getElementById('chartModal').classList.add('hidden');
+    chartModal.classList.add('hidden');
 }
 
-document.getElementById('search').addEventListener('input', renderStudents);
+search.addEventListener('input', renderStudents);
 
 renderStudents();
