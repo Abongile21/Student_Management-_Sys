@@ -152,7 +152,7 @@ function confirmDeleteAll() {
     localStorage.removeItem('students');
     del.play()
     renderStudents();
-    closeDeleteAllModal();
+    cancelDeleteAll();
 }
 
 function cancelDeleteAll() {
