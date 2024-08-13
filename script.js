@@ -12,8 +12,10 @@ const submit = document.getElementById('submit')
 const studentModal = document.getElementById('studentModal')
 const chartModal = document.getElementById('chartModal')
 const search = document.getElementById('search');
+const deleteAllModal = document.getElementById('deleteAllModal')
+const gradeChart = document.getElementById('gradeChart')
 
-// let students = JSON.parse(localStorage.getItem('students')) || [];
+
 
 
 
@@ -69,7 +71,7 @@ let students = [
     { fname: 'Xena', lname: 'Fox', grade: 95 },
     { fname: 'Yann', lname: 'Hayes', grade: 67 },
     { fname: 'Zoe', lname: 'Ward', grade: 81 }
-];
+] || JSON.parse(localStorage.getItem('students'));
 
 
 studentForm.addEventListener('submit', (e) => {
@@ -114,8 +116,8 @@ function renderStudents() {
                 <td class="p-3">${student.lname}</td>
                 <td class="p-3">${student.grade}</td>
                 <td class="p-3">
-                    <button class="bg-yellow-500 text-white px-3 py-1 rounded mr-2" onclick="editStudent(${index})">Update</button>
-                    <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteStudent(${index})">Delete</button>
+                    <button class="bg-yellow-500 text-white px-3 py-1 rounded mr-2" onclick="editStudent(${index})"><i class="fas fa-pen mr-2"></i>Update</button>
+                    <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteStudent(${index})"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
                 </td>
             `;
             tbody.prepend(row);
@@ -137,11 +139,12 @@ function deleteStudent(index) {
     students.splice(index, 1);
     localStorage.setItem('students', JSON.stringify(students));
     del.play()
+    deleteAllModal.classList.add('hidden');
     renderStudents();
 }
 
 function deleteAll() {
-    document.getElementById('deleteAllModal').classList.remove('hidden');
+    deleteAllModal.classList.remove('hidden');
 }
 
 function confirmDeleteAll() {
@@ -153,7 +156,8 @@ function confirmDeleteAll() {
 }
 
 function cancelDeleteAll() {
-    closeDeleteAllModal();
+    deleteAllModal.classList.add('hidden');
+    
 }
 
 function openModal() {
@@ -165,11 +169,10 @@ function closeModal() {
     studentForm.reset();
     editingIndex = -1;
     submit.textContent = 'Add';
-    adding.play()
 }
 
 function openChartModal() {
-    const ctx = chartModal.getContext('2d');
+    const ctx = gradeChart .getContext('2d');
 
     
     if (chartInstance) {
