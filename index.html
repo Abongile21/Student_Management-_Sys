@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +9,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         @keyframes slidein {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0%); }
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(0%);
+            }
         }
+
         .slide-in {
             animation: slidein 1s ease-in;
         }
     </style>
 </head>
+
 <body class="font-sans bg-gray-100">
 
     <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-4xl slide-in">
         <h1 class="text-2xl font-bold text-center mb-6">Student Management System</h1>
-        
+
         <!-- Action Buttons -->
         <div class="flex justify-between mb-4">
             <button class="bg-blue-500 text-white px-4 py-2 rounded flex items-center" onclick="openModal()">
@@ -32,6 +40,9 @@
                 </button>
                 <button class="bg-red-500 text-white px-4 py-2 rounded flex items-center" onclick="deleteAll()">
                     <i class="fas fa-trash-alt mr-2"></i> Delete All
+                </button>
+                <button class="bg-yellow-500 text-white px-4 py-2 rounded flex items-center" onclick="openCalculatorModal()">
+                    <i class="fas fa-calculator mr-2"></i> Calculator
                 </button>
             </div>
         </div>
@@ -50,11 +61,12 @@
                 </tr>
             </thead>
             <tbody>
-
+                <!-- Dynamic rows will be added here by JavaScript -->
             </tbody>
         </table>
     </div>
 
+    <!-- Add/Edit Student Modal -->
     <div id="studentModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
         <div class="bg-white p-6 rounded-lg max-w-sm w-full">
             <h2 id="modalTitle" class="text-xl font-semibold mb-4">Add Student</h2>
@@ -80,6 +92,7 @@
         </div>
     </div>
 
+    <!-- Chart Modal -->
     <div id="chartModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
         <div class="bg-white p-6 rounded-lg max-w-4xl w-full">
             <h2 class="text-xl font-semibold mb-4">Student Grade Distribution</h2>
@@ -88,6 +101,7 @@
         </div>
     </div>
 
+    <!-- Delete All Confirmation Modal -->
     <div id="deleteAllModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
         <div class="bg-white p-6 rounded-lg max-w-sm w-full">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Confirm Delete All</h2>
@@ -98,11 +112,44 @@
             </div>
         </div>
     </div>
-    <audio src="./sounds/trash.wav" id="del"></audio>
-    <audio src="./sounds/653820__ukjoncollins__iphone-text-sound.wav" id="adding"></audio>
+
+    <!-- Calculator Modal -->
+    <!-- Calculator Modal -->
+<div id="calculatorModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg max-w-sm w-full">
+        <h2 class="text-xl font-semibold mb-4">Calculator</h2>
+        <input type="text" id="calculatorDisplay" class="p-2 border border-gray-300 rounded w-full text-right mb-4" disabled>
+
+        <div class="grid grid-cols-4 gap-2">
+            <button id="clearButton" class="bg-gray-300 p-4 rounded">C</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="setOperation('/')">/</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="setOperation('*')">*</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="setOperation('-')">-</button>
+
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('7')">7</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('8')">8</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('9')">9</button>
+            <button class="bg-gray-300 p-4 rounded row-span-2" onclick="setOperation('+')">+</button>
+
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('4')">4</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('5')">5</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('6')">6</button>
+
+            <button class="bg-gray-300 p-4 rounded col-span-2" onclick="appendNumber('0')">0</button>
+            <button class="bg-gray-300 p-4 rounded" onclick="appendNumber('.')">.</button>
+            <button id="equalsButton" class="bg-blue-500 text-white p-4 rounded col-span-4">=</button>
+        </div>
+
+        <button id="historyButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Toggle History</button>
+        <div id="historyContainer" class="mt-4 hidden"></div>
+
+        <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4" onclick="closeCalculatorModal()">Close</button>
+    </div>
+</div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link the external JavaScript file -->
     <script src="script.js"></script>
 </body>
+
 </html>

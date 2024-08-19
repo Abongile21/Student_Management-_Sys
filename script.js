@@ -105,11 +105,10 @@ function renderStudents() {
 
     const searchQuery = search.value.toLowerCase();
 
-    students
-        .filter(student => student.fname.toLowerCase().includes(searchQuery) || 
+    students.filter(student => student.fname.toLowerCase().includes(searchQuery) || 
             student.lname.toLowerCase().includes(searchQuery) ||
-            student.grade.toString().includes(searchQuery))
-        .forEach((student, index) => {
+            student.grade.toString().includes(searchQuery)
+        ).forEach((student, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td class="p-3">${student.fname}</td>
@@ -245,3 +244,128 @@ function closeChartModal() {
 search.addEventListener('input', renderStudents);
 
 renderStudents();
+
+
+let currentInput = '';
+let previousInput = '';
+let operator = '';
+let history = [];
+
+function appendNumber(number) {
+    currentInput += number;
+    updateDisplay();
+}
+
+function setOperation(op) {
+    if (currentInput === '') return;
+    if (previousInput !== '') {
+        calculateResult();
+    }
+    operator = op;
+    previousInput = currentInput;
+    currentInput = '';
+    updateDisplay();
+}
+
+function calculateResult() {
+    if (previousInput === '' || currentInput === '' || operator === '') return;
+    
+    let result;
+    const prev = parseFloat(previousInput);
+    const current = parseFloat(currentInput);
+    
+    switch (operator) {
+        case '+':
+            result = prev + current;
+            break;
+        case '-':
+            result = prev - current;
+            break;
+        case '*':
+            result = prev * current;
+            break;
+        case '/':
+            if (current === 0) {
+                result = 'Error';
+            } else {
+                result = prev / current;
+            }
+            break;
+        default:
+            return;
+    }
+    
+    if (result === 'Error') {
+        history.push(`${previousInput} ${operator} ${currentInput} = ${result}`);
+    } else {
+        history.push(`${previousInput} ${operator} ${currentInput} = ${result}`);
+    }
+
+    previousInput = result.toString();
+    currentInput = '';
+    operator = '';
+    updateDisplay();
+}
+
+function clearCalculator() {
+    currentInput = '';
+    previousInput = '';
+    operator = '';
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const display = document.getElementById('calculatorDisplay');
+    display.value = currentInput || previousInput || '0';
+}
+
+function toggleHistory() {
+    const historyContainer = document.getElementById('historyContainer');
+    historyContainer.innerHTML = history.map(entry => `<div>${entry}</div>`).join('');
+    historyContainer.classList.toggle('hidden');
+}
+
+function closeCalculatorModal() {
+    document.getElementById('calculatorModal').classList.add('hidden');
+}
+
+function openCalculatorModal() {
+    document.getElementById('calculatorModal').classList.remove('hidden');
+}
+
+document.querySelectorAll('.number').forEach(button => {
+    button.addEventListener('click', () => appendNumber(button.innerText));
+});
+
+document.querySelectorAll('.operator').forEach(button => {
+    button.addEventListener('click', () => setOperation(button.innerText));
+});
+
+document.getElementById('equalsButton').addEventListener('click', calculateResult);
+document.getElementById('clearButton').addEventListener('click', clearCalculator);
+document.getElementById('historyButton').addEventListener('click', toggleHistory);
+
+
+function toggleHistory() {
+    showHistory = !showHistory;
+    const historyContainer = document.getElementById('historyContainer');
+    if (showHistory) {
+        historyContainer.innerHTML = history.map(entry => `<div>${entry}</div>`).join('');
+        historyContainer.classList.remove('hidden');
+    } else {
+        historyContainer.classList.add('hidden');
+    }
+}
+
+function closeCalculatorModal() {
+    document.getElementById('calculatorModal').classList.add('hidden');
+}
+
+function openCalculatorModal() {
+    document.getElementById('calculatorModal').classList.remove('hidden');
+}
+
+document.getElementById('clearButton').addEventListener('click', clearCalculator);
+document.getElementById('equalsButton').addEventListener('click', calculateResult);
+document.getElementById('historyButton').addEventListener('click', toggleHistory);
+
