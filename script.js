@@ -245,11 +245,9 @@ search.addEventListener('input', renderStudents);
 
 renderStudents();
 
-
 let currentInput = '';
 let previousInput = '';
 let operator = '';
-let history = [];
 
 function appendNumber(number) {
     currentInput += number;
@@ -257,10 +255,12 @@ function appendNumber(number) {
 }
 
 function setOperation(op) {
-    if (currentInput === '') return;
-    if (previousInput !== '') {
+    if (currentInput === '' && previousInput === '') return;
+
+    if (previousInput !== '' && currentInput !== '') {
         calculateResult();
     }
+
     operator = op;
     previousInput = currentInput;
     currentInput = '';
@@ -269,11 +269,11 @@ function setOperation(op) {
 
 function calculateResult() {
     if (previousInput === '' || currentInput === '' || operator === '') return;
-    
+
     let result;
     const prev = parseFloat(previousInput);
     const current = parseFloat(currentInput);
-    
+
     switch (operator) {
         case '+':
             result = prev + current;
@@ -285,24 +285,14 @@ function calculateResult() {
             result = prev * current;
             break;
         case '/':
-            if (current === 0) {
-                result = 'Error';
-            } else {
-                result = prev / current;
-            }
+            result = current === 0 ? 'Error' : prev / current;
             break;
         default:
             return;
     }
-    
-    if (result === 'Error') {
-        history.push(`${previousInput} ${operator} ${currentInput} = ${result}`);
-    } else {
-        history.push(`${previousInput} ${operator} ${currentInput} = ${result}`);
-    }
 
-    previousInput = result.toString();
-    currentInput = '';
+    currentInput = result.toString();
+    previousInput = '';
     operator = '';
     updateDisplay();
 }
@@ -316,44 +306,12 @@ function clearCalculator() {
 
 function updateDisplay() {
     const display = document.getElementById('calculatorDisplay');
-    display.value = currentInput || previousInput || '0';
-}
-
-function toggleHistory() {
-    const historyContainer = document.getElementById('historyContainer');
-    historyContainer.innerHTML = history.map(entry => `<div>${entry}</div>`).join('');
-    historyContainer.classList.toggle('hidden');
-}
-
-function closeCalculatorModal() {
-    document.getElementById('calculatorModal').classList.add('hidden');
-}
-
-function openCalculatorModal() {
-    document.getElementById('calculatorModal').classList.remove('hidden');
-}
-
-document.querySelectorAll('.number').forEach(button => {
-    button.addEventListener('click', () => appendNumber(button.innerText));
-});
-
-document.querySelectorAll('.operator').forEach(button => {
-    button.addEventListener('click', () => setOperation(button.innerText));
-});
-
-document.getElementById('equalsButton').addEventListener('click', calculateResult);
-document.getElementById('clearButton').addEventListener('click', clearCalculator);
-document.getElementById('historyButton').addEventListener('click', toggleHistory);
-
-
-function toggleHistory() {
-    showHistory = !showHistory;
-    const historyContainer = document.getElementById('historyContainer');
-    if (showHistory) {
-        historyContainer.innerHTML = history.map(entry => `<div>${entry}</div>`).join('');
-        historyContainer.classList.remove('hidden');
+    if (currentInput === '' && previousInput === '') {
+        display.value = '0';
+    } else if (currentInput === '') {
+        display.value = `${previousInput} ${operator}`;
     } else {
-        historyContainer.classList.add('hidden');
+        display.value = `${previousInput} ${operator} ${currentInput}`;
     }
 }
 
@@ -367,5 +325,13 @@ function openCalculatorModal() {
 
 document.getElementById('clearButton').addEventListener('click', clearCalculator);
 document.getElementById('equalsButton').addEventListener('click', calculateResult);
-document.getElementById('historyButton').addEventListener('click', toggleHistory);
+
+document.querySelectorAll('.number').forEach(button => {
+    button.addEventListener('click', () => appendNumber(button.innerText));
+});
+
+document.querySelectorAll('.operator').forEach(button => {
+    button.addEventListener('click', () => setOperation(button.innerText));
+});
+
 
