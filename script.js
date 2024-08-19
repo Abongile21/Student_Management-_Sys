@@ -67,6 +67,7 @@ function renderStudents() {
             `;
             tbody.prepend(row);
         });
+        updateProgressBar()
 }
 
 function editStudent(index) {
