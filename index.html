@@ -51,6 +51,13 @@
             <input type="text" id="search" placeholder="Search students..." class="p-2 border border-gray-300 rounded w-full">
         </div>
 
+        <div class="mb-4">
+            <div class="bg-gray-200 h-6 rounded-full relative">
+                <div id="progressBar" class="bg-green-500 h-full rounded-full text-white text-center"></div>
+            </div>
+        </div>
+
+
         <table id="studentTable" class="w-full border-collapse mb-6">
             <thead>
                 <tr>
@@ -142,7 +149,8 @@
             <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 hover:bg-gray-600 transition duration-150" onclick="closeCalculatorModal()">Close</button>
         </div>
     </div>
-
+    <audio src="./sounds/653820__ukjoncollins__iphone-text-sound.wav" id="add"></audio>
+    <audio src="./sounds/trash.wav" id="del"></audio>
 
     <!-- Link the external JavaScript file -->
     <script src="script.js"></script>

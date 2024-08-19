@@ -7,7 +7,7 @@ const lname = document.getElementById('lname');
 const grade = document.getElementById('grade');
 const studentForm = document.getElementById('studentForm');
 const del =document.getElementById('del')
-const adding = document.getElementById('adding')
+const adding = document.getElementById('add')
 const submit = document.getElementById('submit')
 const studentModal = document.getElementById('studentModal')
 const chartModal = document.getElementById('chartModal')
@@ -19,12 +19,10 @@ const gradeChart = document.getElementById('gradeChart')
 
 
 
-let students = [] || JSON.parse(localStorage.getItem('students'));
-
+let students = JSON.parse(localStorage.getItem('students')) || [];
 
 studentForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const studentData = {
         fname: fname.value,
         lname: lname.value,
@@ -38,12 +36,12 @@ studentForm.addEventListener('submit', (e) => {
         editingIndex = -1;
         submit.textContent = 'Add';
     }
-    adding.play()
+
+    adding.play();
     localStorage.setItem('students', JSON.stringify(students));
 
     studentForm.reset();
     closeModal();
-    
     renderStudents();
 });
 
@@ -51,7 +49,7 @@ function renderStudents() {
     const tbody = document.querySelector('#studentTable tbody');
     tbody.innerHTML = '';
 
-    const searchQuery = search.value.toLowerCase();
+    const searchQuery = search ? search.value.toLowerCase() : '';
 
     students.filter(student => student.fname.toLowerCase().includes(searchQuery) || 
             student.lname.toLowerCase().includes(searchQuery) ||
@@ -62,7 +60,7 @@ function renderStudents() {
                 <td class="p-3">${student.fname}</td>
                 <td class="p-3">${student.lname}</td>
                 <td class="p-3">${student.grade}</td>
-                <td class="p-3">
+                <td class="p-3 items-center">
                     <button class="bg-yellow-500 text-white px-3 py-1 rounded mr-2" onclick="editStudent(${index})"><i class="fas fa-pen mr-2"></i>Update</button>
                     <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="deleteStudent(${index})"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
                 </td>
@@ -78,14 +76,14 @@ function editStudent(index) {
     grade.value = student.grade;
     editingIndex = index;
     submit.textContent = 'Update';
-    submit.classList='bg-yellow-500 text-white px-3 py-1 rounded mr-2'
+    submit.classList = 'bg-yellow-500 text-white px-3 py-1 rounded mr-2';
     openModal();
 }
 
 function deleteStudent(index) {
     students.splice(index, 1);
     localStorage.setItem('students', JSON.stringify(students));
-    del.play()
+    del.play();
     deleteAllModal.classList.add('hidden');
     renderStudents();
 }
@@ -97,7 +95,7 @@ function deleteAll() {
 function confirmDeleteAll() {
     students = [];
     localStorage.removeItem('students');
-    del.play()
+    del.play();
     renderStudents();
     cancelDeleteAll();
 }
@@ -271,8 +269,8 @@ function openCalculatorModal() {
     document.getElementById('calculatorModal').classList.remove('hidden');
 }
 
-document.getElementById('clearButton').addEventListener('click', clearCalculator);
-document.getElementById('equalsButton').addEventListener('click', calculateResult);
+// document.getElementById('clearButton').addEventListener('click', clearCalculator);
+// document.getElementById('equalsButton').addEventListener('click', calculateResult);
 
 document.querySelectorAll('.number').forEach(button => {
     button.addEventListener('click', () => appendNumber(button.innerText));
@@ -282,4 +280,29 @@ document.querySelectorAll('.operator').forEach(button => {
     button.addEventListener('click', () => setOperation(button.innerText));
 });
 
+function updateProgressBar() {
+    const table = document.getElementById('studentTable');
+    const rows = table.querySelectorAll('tbody tr');
+    let totalGrade = 0;
+    let count = 0;
 
+    rows.forEach(row => {
+        if (row.style.display !== 'none') {
+            const gradeCell = row.cells[2];
+
+
+            const grade = parseFloat(gradeCell.textContent);
+            if (!isNaN(grade)) {
+                totalGrade += grade;
+                count++;
+            }
+        }
+    });
+
+    const average = count > 0 ? totalGrade / count : 0;
+    const progressBar = document.getElementById('progressBar');
+    const percentage = Math.min(100, Math.round(average));
+    progressBar.style.width = percentage + '%';
+    progressBar.textContent = percentage + '%';
+}
+updateProgressBar()
