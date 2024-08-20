@@ -118,7 +118,7 @@ function closeModal() {
 }
 
 function openChartModal() {
-    const ctx = gradeChart .getContext('2d');
+    const ctx = gradeChart.getContext('2d');
 
     
     if (chartInstance) {
