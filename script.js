@@ -270,8 +270,7 @@ function openCalculatorModal() {
     document.getElementById('calculatorModal').classList.remove('hidden');
 }
 
-// document.getElementById('clearButton').addEventListener('click', clearCalculator);
-// document.getElementById('equalsButton').addEventListener('click', calculateResult);
+
 
 document.querySelectorAll('.number').forEach(button => {
     button.addEventListener('click', () => appendNumber(button.innerText));
